@@ -1,102 +1,97 @@
 package redisclient
 
-// BaseResult is the base result for redis commands
-type BaseResult interface {
+// baseResult is the base result for redis commands
+type baseResult interface {
 	Err() error
 }
 
 // Result is the common result for redis commands
 type Result interface {
-	BaseResult
+	baseResult
 	Val() interface{}
 	Result() (interface{}, error)
 }
 
 // StringResult is the string result for redis commands
 type StringResult interface {
-	BaseResult
+	baseResult
 	Val() string
 	Result() (string, error)
 }
 
 // FloatResult is the float result for redis commands
 type FloatResult interface {
-	BaseResult
+	baseResult
 	Val() float64
 	Result() (float64, error)
 }
 
 // IntResult is the int result for redis commands
 type IntResult interface {
-	BaseResult
+	baseResult
 	Val() int64
 	Result() (int64, error)
 }
 
 // SliceResult is the slice result for redis commands
 type SliceResult interface {
-	BaseResult
+	baseResult
 	Val() []interface{}
 	Result() ([]interface{}, error)
 }
 
 // StatusResult is the status result for redis commands
 type StatusResult interface {
-	BaseResult
+	baseResult
 	Val() string
 	Result() (string, error)
 }
 
 // BoolResult the bool result for redis commands
 type BoolResult interface {
-	BaseResult
+	baseResult
 	Val() bool
 	Result() (bool, error)
 }
 
 // IntSliceResult is the int slice result for redis commands
 type IntSliceResult interface {
-	BaseResult
+	baseResult
 	Val() []int64
 	Result() ([]int64, error)
 }
 
 // StringSliceResult is the string slice result for redis commands
 type StringSliceResult interface {
-	BaseResult
+	baseResult
 	Val() []string
 	Result() ([]string, error)
 }
 
 // BoolSliceResult is the bool slice result for redis commands
 type BoolSliceResult interface {
-	BaseResult
+	baseResult
 	Val() []bool
 	Result() ([]bool, error)
 }
 
 // StringStringMapResult is the string string map result for redis commands
 type StringStringMapResult interface {
-	BaseResult
+	baseResult
 	Val() map[string]string
 	Result() (map[string]string, error)
 }
 
 // StringIntMapResult is the string int map result for redis commands
 type StringIntMapResult interface {
-	BaseResult
+	baseResult
 	Val() map[string]int64
 	Result() (map[string]int64, error)
 }
 
 // StringStructMapResult is the string struct map result for redis commands
 type StringStructMapResult interface {
-	BaseResult
+	baseResult
 	Val() map[string]struct{}
 	Result() (map[string]struct{}, error)
-}
-
-// PipelineResult is the pipeline result for redis pipeline command
-type PipelineResult interface {
-	Elems() []Result
 }
