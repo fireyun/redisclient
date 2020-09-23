@@ -6,7 +6,7 @@ import (
 
 // Pipeliner is interface for redis pipeline technique
 type Pipeliner interface {
-	redis.Cmdable
+	redis.StatefulCmdable
 	Close() error
 	Discard() error
 	Exec() ([]redis.Cmder, error)

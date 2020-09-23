@@ -10,6 +10,7 @@ import (
 // Client is the interface for redis client
 type Client interface {
 	Subscribe(ctx context.Context, channels ...string) PubSub
+	PSubscribe(ctx context.Context, channels ...string) PubSub
 
 	Cmds
 }
@@ -32,6 +33,14 @@ func NewFailoverClient(failoverOpt *redis.FailoverOptions) Client {
 	}
 }
 
+func (c *client) Subscribe(ctx context.Context, channels ...string) PubSub {
+	return c.cli.Subscribe(channels...)
+}
+
+func (c *client) PSubscribe(ctx context.Context, channels ...string) PubSub {
+	return c.cli.PSubscribe(channels...)
+}
+
 func (c *client) Pipeline() Pipeliner {
 	return c.cli.Pipeline()
 }
@@ -48,6 +57,10 @@ func (c *client) Del(ctx context.Context, keys ...string) IntResult {
 	return c.cli.Del(keys...)
 }
 
+func (c *client) Exists(ctx context.Context, keys ...string) IntResult {
+	return c.cli.Exists(keys...)
+}
+
 func (c *client) Eval(ctx context.Context, script string, keys []string, args ...interface{}) Result {
 	return c.cli.Eval(script, keys, args...)
 }
@@ -56,12 +69,36 @@ func (c *client) Get(ctx context.Context, key string) StringResult {
 	return c.cli.Get(key)
 }
 
+func (c *client) HDel(ctx context.Context, key string, fields ...string) IntResult {
+	return c.cli.HDel(key, fields...)
+}
+
+func (c *client) HGet(ctx context.Context, key, field string) StringResult {
+	return c.cli.HGet(key, field)
+}
+
+func (c *client) HGetAll(ctx context.Context, key string) StringStringMapResult {
+	return c.cli.HGetAll(key)
+}
+
 func (c *client) HIncrBy(ctx context.Context, key, field string, incr int64) IntResult {
 	return c.cli.HIncrBy(key, field, incr)
 }
 
+func (c *client) HMGet(ctx context.Context, key string, fields ...string) SliceResult {
+	return c.cli.HMGet(key, fields...)
+}
+
+func (c *client) HSet(ctx context.Context, key string, values ...interface{}) IntResult {
+	return c.cli.HSet(key, values...)
+}
+
 func (c *client) Incr(ctx context.Context, key string) IntResult {
 	return c.cli.Incr(key)
+}
+
+func (c *client) Keys(ctx context.Context, pattern string) StringSliceResult {
+	return c.cli.Keys(pattern)
 }
 
 func (c *client) LLen(ctx context.Context, key string) IntResult {
@@ -88,10 +125,22 @@ func (c *client) Publish(ctx context.Context, channel string, message interface{
 	return c.cli.Publish(channel, message)
 }
 
-func (c *client) Subscribe(ctx context.Context, channels ...string) PubSub {
-	return c.cli.Subscribe(channels...)
+func (c *client) SAdd(ctx context.Context, key string, members ...interface{}) IntResult {
+	return c.cli.SAdd(key, members...)
 }
 
 func (c *client) Set(ctx context.Context, key string, value interface{}, expiration time.Duration) StatusResult {
-	return c.cli.Get(key)
+	return c.cli.Set(key, value, expiration)
+}
+
+func (c *client) SetNX(ctx context.Context, key string, value interface{}, expiration time.Duration) BoolResult {
+	return c.cli.SetNX(key, value, expiration)
+}
+
+func (c *client) SMembers(ctx context.Context, key string) StringSliceResult {
+	return c.cli.SMembers(key)
+}
+
+func (c *client) SRem(ctx context.Context, key string, members ...interface{}) IntResult {
+	return c.cli.SRem(key, members...)
 }

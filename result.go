@@ -17,6 +17,7 @@ type StringResult interface {
 	baseResult
 	Val() string
 	Result() (string, error)
+	Scan(val interface{}) error
 }
 
 // FloatResult is the float result for redis commands
