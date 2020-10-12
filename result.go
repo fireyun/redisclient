@@ -1,5 +1,9 @@
 package redisclient
 
+import (
+	"time"
+)
+
 // baseResult is the base result for redis commands
 type baseResult interface {
 	Err() error
@@ -95,4 +99,11 @@ type StringStructMapResult interface {
 	baseResult
 	Val() map[string]struct{}
 	Result() (map[string]struct{}, error)
+}
+
+// DurationResult is the duration result for redis commands
+type DurationResult interface {
+	baseResult
+	Val() time.Duration
+	Result() (time.Duration, error)
 }

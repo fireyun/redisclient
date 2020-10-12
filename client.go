@@ -12,7 +12,7 @@ type Client interface {
 	Subscribe(ctx context.Context, channels ...string) PubSub
 	PSubscribe(ctx context.Context, channels ...string) PubSub
 
-	Cmds
+	Commands
 }
 
 type client struct {
@@ -53,6 +53,10 @@ func (c *client) BRPopLPush(ctx context.Context, source, destination string, tim
 	return c.cli.BRPopLPush(source, destination, timeout)
 }
 
+func (c *client) Close() error {
+	return c.cli.Close()
+}
+
 func (c *client) Del(ctx context.Context, keys ...string) IntResult {
 	return c.cli.Del(keys...)
 }
@@ -63,6 +67,14 @@ func (c *client) Exists(ctx context.Context, keys ...string) IntResult {
 
 func (c *client) Eval(ctx context.Context, script string, keys []string, args ...interface{}) Result {
 	return c.cli.Eval(script, keys, args...)
+}
+
+func (c *client) Expire(ctx context.Context, key string, expiration time.Duration) BoolResult {
+	return c.cli.Expire(key, expiration)
+}
+
+func (c *client) FlushDB(ctx context.Context) StatusResult {
+	return c.cli.FlushDB()
 }
 
 func (c *client) Get(ctx context.Context, key string) StringResult {
@@ -83,6 +95,10 @@ func (c *client) HGetAll(ctx context.Context, key string) StringStringMapResult 
 
 func (c *client) HIncrBy(ctx context.Context, key, field string, incr int64) IntResult {
 	return c.cli.HIncrBy(key, field, incr)
+}
+
+func (c *client) HKeys(ctx context.Context, key string) StringSliceResult {
+	return c.cli.HKeys(key)
 }
 
 func (c *client) HMGet(ctx context.Context, key string, fields ...string) SliceResult {
@@ -109,6 +125,10 @@ func (c *client) LPush(ctx context.Context, key string, values ...interface{}) I
 	return c.cli.LPush(key, values...)
 }
 
+func (c *client) LRange(ctx context.Context, key string, start, stop int64) StringSliceResult {
+	return c.cli.LRange(key, start, stop)
+}
+
 func (c *client) LTrim(ctx context.Context, key string, start, stop int64) StatusResult {
 	return c.cli.LTrim(key, start, stop)
 }
@@ -117,12 +137,28 @@ func (c *client) MGet(ctx context.Context, keys ...string) SliceResult {
 	return c.cli.MGet(keys...)
 }
 
+func (c *client) MSet(ctx context.Context, values ...interface{}) StatusResult {
+	return c.cli.MSet(values...)
+}
+
 func (c *client) Ping(ctx context.Context) StatusResult {
 	return c.cli.Ping()
 }
 
 func (c *client) Publish(ctx context.Context, channel string, message interface{}) IntResult {
 	return c.cli.Publish(channel, message)
+}
+
+func (c *client) RPop(ctx context.Context, key string) StringResult {
+	return c.cli.RPop(key)
+}
+
+func (c *client) RPopLPush(ctx context.Context, source, destination string) StringResult {
+	return c.cli.RPopLPush(source, destination)
+}
+
+func (c *client) RPush(ctx context.Context, key string, values ...interface{}) IntResult {
+	return c.cli.RPush(key, values...)
 }
 
 func (c *client) SAdd(ctx context.Context, key string, members ...interface{}) IntResult {
@@ -143,4 +179,8 @@ func (c *client) SMembers(ctx context.Context, key string) StringSliceResult {
 
 func (c *client) SRem(ctx context.Context, key string, members ...interface{}) IntResult {
 	return c.cli.SRem(key, members...)
+}
+
+func (c *client) TTL(ctx context.Context, key string) DurationResult {
+	return c.cli.TTL(key)
 }

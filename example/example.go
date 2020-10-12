@@ -17,7 +17,7 @@ func main() {
 func MyClient() {
 	client := redisclient.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
-		Password: "",
+		Password: "cc",
 		DB:       0,
 	})
 
@@ -28,8 +28,8 @@ func MySentinelClient() {
 	sentinelClient := redisclient.NewFailoverClient(&redis.FailoverOptions{
 		MasterName:       "mymaster",
 		SentinelAddrs:    []string{"localhost:26379", "localhost:26380", "localhost:26381"},
-		SentinelPassword: "",
-		Password:         "",
+		SentinelPassword: "ss",
+		Password:         "cc",
 	})
 	DBOps(sentinelClient)
 }
